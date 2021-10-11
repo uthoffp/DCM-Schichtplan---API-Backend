@@ -1,0 +1,25 @@
+{
+  "name": "dcm-api",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework) [![Total Downloads](https://img.shields.io/packagist/dt/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework) [![Latest Stable Version](https://img.shields.io/packagist/v/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework) [![License](https://img.shields.io/packagist/l/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uthoffp/DCM-Schichtplan---API-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uthoffp/DCM-Schichtplan---API-Backend/issues"
+  },
+  "homepage": "https://github.com/uthoffp/DCM-Schichtplan---API-Backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mssql": "^7.2.1",
+    "nodemon": "^2.0.13"
+  }
+}

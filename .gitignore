@@ -1,6 +1,6 @@
-/vendor
-/.idea
-Homestead.json
-Homestead.yaml
-.env
-.phpunit.result.cache
+.nyc_output/
+coverage/
+node_modules/
+npm-debug.log
+package-lock.json
+test/*.log
