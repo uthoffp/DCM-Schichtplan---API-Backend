@@ -10,5 +10,5 @@ module.exports.db_connect = async function (query) {
     };
 
     let db = await sql.connect(config)
-    return db.request().query('select * from B_BaseData').recordsets;
+    return db.request().query(query);
 }
