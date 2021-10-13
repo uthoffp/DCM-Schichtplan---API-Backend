@@ -2,7 +2,7 @@ module.exports.encrypt = function (value) {
     const l = value.length;
     let result = "";
     let m = 31;
-    
+
     let cryptChar = new Array(256).fill(0);
     cryptChar[32] = 33;
     cryptChar[33] = 99;
