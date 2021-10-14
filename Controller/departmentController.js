@@ -1,1 +1,0 @@
-const db = require('../Script/db_connect');

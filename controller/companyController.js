@@ -1,4 +1,4 @@
-const db = require('../Script/db_connect');
+const db = require('../config/db_connect');
 
 module.exports.companyData = async function (req, res) {
     const cId = req.params.cId;
@@ -16,4 +16,11 @@ module.exports.specialTime = function (req, res) {
                    FROM [B_SpecialTime]
                    WHERE [Company] = '${cId}' AND LanguageKey = 'deu' AND TypeKey = ${{typeKey}}`;
     db.query(query);
+}
+
+module.exports.settings = async function (req, res) {
+    const cId = req.params.cId;
+    const query = `SELECT * FROM [B_GeneralSettings] WHERE [Company] = ${{cId}}`;
+    const result = db.query(query);
+    res.send(result);
 }

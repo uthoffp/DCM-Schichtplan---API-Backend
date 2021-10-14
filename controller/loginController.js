@@ -1,5 +1,5 @@
-const db = require('../Script/db_connect');
-const crypto = require('../Script/encrypt');
+const db = require('../config/db_connect');
+const crypto = require('../config/encrypt');
 const jwt = require('jsonwebtoken');
 
 module.exports.login = async function (req, res) {
@@ -13,7 +13,7 @@ module.exports.login = async function (req, res) {
     const result = await db.query(query);
     const user = result[0];
 
-    if (user != undefined && pw === user.Password) {
+    if (user !== undefined && pw === user.Password) {
         const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '60m'});
         res.json({access_token: token});
     } else {
@@ -29,5 +29,5 @@ module.exports.blockAccount = function (req, res) {
     const query = `UPDATE [B_Employees]
                    SET WebAccessBlocked = 1, LastChange = '${date}', LastUser='WEB-Access'
                    WHERE Company = '${cId}' AND EMail = ${email}`
-    db.db_connect(query);
+    db.query(query);
 }
