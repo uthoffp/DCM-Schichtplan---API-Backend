@@ -1,4 +1,4 @@
-const db = require('../config/db_connect');
+const db = require('../config/db');
 const crypto = require('../config/encrypt');
 const jwt = require('jsonwebtoken');
 
@@ -9,25 +9,41 @@ module.exports.login = async function (req, res) {
 
     const query = `SELECT EmployeeNumber, FamilyName, FirstName, Password, Company, WebAccessBlocked
                    FROM [B_Employees]
-                   WHERE Company = ${cId} AND EMail = '${email}'`;
+                   WHERE Company = ${cId}
+                     AND EMail = '${email}'`;
     const result = await db.query(query);
     const user = result[0];
 
     if (user !== undefined && pw === user.Password) {
         const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '60m'});
-        res.json({access_token: token});
+        res.json({access_token: token, user});
     } else {
         res.sendStatus(401);
     }
 }
 
-module.exports.blockAccount = function (req, res) {
+module.exports.blockAccount = function (req) {
     const cId = req.params.cId;
     const email = req.params.email;
     const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     const query = `UPDATE [B_Employees]
-                   SET WebAccessBlocked = 1, LastChange = '${date}', LastUser='WEB-Access'
-                   WHERE Company = '${cId}' AND EMail = ${email}`
+                   SET WebAccessBlocked = 1,
+                       LastChange       = '${date}',
+                       LastUser='WEB-Access'
+                   WHERE Company = '${cId}'
+                     AND EMail = ${email}`
+    db.query(query);
+}
+
+module.exports.changePassword = function (req) {
+    const cId = req.params.cId;
+    const uId = req.params.uId;
+    const pw = crypto.encrypt(req.params.pw);
+
+    const query = `UPDATE [B_Employees]
+                   SET [Password] = '${pw}'
+                   WHERE [Company] = ${cId}
+                     AND [EmployeeNumber] = ${uId}`;
     db.query(query);
 }

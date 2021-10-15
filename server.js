@@ -15,19 +15,26 @@ const PORT = 8080;
 app.use(express.json())
 app.listen(PORT, () => console.log("Webserver started on http://localhost:" + process.env.APP_PORT));
 
-// Routes
+
+//Routes
 app.get('/company/:cId/login/:email', (req, res) => loginController.login(req, res));
 app.post('/company/:cId/block/:email, ', (req, res) => loginController.blockAccount(req, res))
 
 app.get('/company/:cId', authenticateToken, (req, res) => companyController.companyData(req, res));
 app.get('/company/:cId/specialtime/:type', authenticateToken, (req, res) => companyController.specialTime(req, res));
+
+app.get('/company/:cId/department/:dep', authenticateToken, (req, res) => departmentController.departmentData(req, res));
+app.get('/company/:cId/user/department/', authenticateToken, (req, res) => departmentController.userDepartment(req, res));
+
 app.get('/company/:cId/user/:uId/actual/:start/:end', authenticateToken, (req, res) => timeController.timeActual(req, res));
 app.get('/company/:cId/user/:uId/actual/latest', authenticateToken, (req, res) => timeController.latestTimes(req, res));
+
+
 
 //Verify access-token
 function authenticateToken(req, res, next) {
     const token = req.headers['auth'];
-    if (token == null) return res.sendStatus(401).send('Missing access-token.');
+    if (token == null) return res.sendStatus(401);
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userData) => {
         if (err) return res.sendStatus(403.).send('Invalid token.');
