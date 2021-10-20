@@ -8,7 +8,7 @@ module.exports.departmentData = async function (req, res) {
                    FROM [B_Departments]
                    WHERE [Company] = ${cId}
                      AND [Department] = '${dep}'`;
-    const result = db.query(query);
+    const result = await db.query(query);
     res.send(result);
 }
 

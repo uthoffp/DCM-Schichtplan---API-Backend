@@ -15,6 +15,7 @@ module.exports.login = async function (req, res) {
     const user = result[0];
 
     if (user !== undefined && pw === user.Password) {
+        delete user.Password;   //remove user from password
         const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '60m'});
         res.json({access_token: token, user});
     } else {
@@ -39,7 +40,7 @@ module.exports.blockAccount = function (req) {
 module.exports.changePassword = function (req) {
     const cId = req.params.cId;
     const uId = req.params.uId;
-    const pw = crypto.encrypt(req.params.pw);
+    const pw = crypto.encrypt(req.body.pw);
 
     const query = `UPDATE [B_Employees]
                    SET [Password] = '${pw}'

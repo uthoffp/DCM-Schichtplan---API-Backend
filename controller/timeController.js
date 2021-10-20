@@ -6,8 +6,8 @@ module.exports.latestTimes = async function (req, res) {
 
     const query = `SELECT TOP 10 E_Date, E_Time, E_Status, EmployeeNumber
                    FROM DCM.dbo.S_ElectronicTime
-                   WHERE Company = ${{cId}}
-                     AND EmployeeNumber = ${{uId}}
+                   WHERE Company = ${cId}
+                     AND EmployeeNumber = ${uId}
                    ORDER BY E_Date DESC, E_Time DESC`;
     const result = await db.query(query);
     res.send(result);
@@ -31,11 +31,10 @@ module.exports.clocking = async function (req, res) {
     const date = new Date();
     const cId = req.params.cId;
     const uId = req.params.uId;
-    const tId = req.params.tId;
-    const status = req.params.status;
-    const username = req.params.username;
+    const tId = req.body.tId;
+    const status = req.body.status; // comes = 0, goes = 1
+    const username = req.body.username;
     const eKey = date.toShortString() + '-' + tId;
-    date.toShortString();
 
     const query = `INSERT INTO [S_ElectronicTime] (Company, E_Key, EmployeeNumber, E_Date, E_Time, E_Status, TerminalID, Processed, E_System, E_Source, OriginalString, LastChange, LastUser)
                    VALUES (${cId}, ${eKey}, ${uId}, GETDATE(), CONVERT(TIME, GETDATE()), ${status}, 10001, 0, 98, 'DCM_APP', NULL, GETDATE(), ${username})`;
@@ -55,71 +54,71 @@ module.exports.timeActual = async function (req, res) {
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = 68) as StartTime1,
+                          ${cId} AND p.EmployeeNumber = 68) as StartTime1,
                        (SELECT TOP 1 p.EndTime1
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as EndTime1,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as EndTime1,
                        (SELECT TOP 1 p.StartTime2
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as StartTime2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as StartTime2,
                        (SELECT TOP 1 p.EndTime2
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as EndTime2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as EndTime2,
                        (SELECT TOP 1 p.SpecialTime1
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as SpecialTime1,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as SpecialTime1,
                        (SELECT TOP 1 p.SpecialTime2
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as SpecialTime2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as SpecialTime2,
                        (SELECT TOP 1 p.Department
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as Department,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as Department,
                        (SELECT TOP 1 p.Station1
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as Station1,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as Station1,
                        (SELECT TOP 1 p.Station2
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as Station2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as Station2,
                        (SELECT TOP 1 p.DivergentDepartmentSt1
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as DivDepartmentsSt1,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as DivDepartmentsSt1,
                        (SELECT TOP 1 p.DivergentDepartmentSt2
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as DivDepartmentsSt2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as DivDepartmentsSt2,
                        (SELECT TOP 1 p.ElectronicTime
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as ElectronicTime,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as ElectronicTime,
                        (SELECT TOP 1 p.DailyHoursNet
                        FROM dbo.S_WeekActual p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as DailyHoursNet
+                          ${cId} AND p.EmployeeNumber = ${uId}) as DailyHoursNet
                    FROM dbo.B_Calendar c
-                   WHERE c.Company = ${{cId}}
-                     AND c.[Date] >= '${{startDate}}'
-                     AND c.[Date] <= '${{endDate}}'
+                   WHERE c.Company = ${cId}
+                     AND c.[Date] >= '${startDate}'
+                     AND c.[Date] <= '${endDate}'
                    ORDER BY c.DATE DESC`;
     const result = await db.query(query);
     res.send(result);
@@ -137,71 +136,71 @@ module.exports.timePlanned = async function (req, res) {
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = 68) as StartTime1,
+                          ${cId} AND p.EmployeeNumber = 68) as StartTime1,
                        (SELECT TOP 1 p.EndTime1
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as EndTime1,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as EndTime1,
                        (SELECT TOP 1 p.StartTime2
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as StartTime2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as StartTime2,
                        (SELECT TOP 1 p.EndTime2
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as EndTime2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as EndTime2,
                        (SELECT TOP 1 p.SpecialTime1
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as SpecialTime1,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as SpecialTime1,
                        (SELECT TOP 1 p.SpecialTime2
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as SpecialTime2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as SpecialTime2,
                        (SELECT TOP 1 p.Department
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as Department,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as Department,
                        (SELECT TOP 1 p.Station1
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as Station1,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as Station1,
                        (SELECT TOP 1 p.Station2
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as Station2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as Station2,
                        (SELECT TOP 1 p.DivergentDepartmentSt1
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as DivDepartmentsSt1,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as DivDepartmentsSt1,
                        (SELECT TOP 1 p.DivergentDepartmentSt2
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as DivDepartmentsSt2,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as DivDepartmentsSt2,
                        (SELECT TOP 1 p.ElectronicTime
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as ElectronicTime,
+                          ${cId} AND p.EmployeeNumber = ${uId}) as ElectronicTime,
                        (SELECT TOP 1 p.DailyHoursNet
                        FROM dbo.S_WeekPlan p
                        WHERE c.[DATE] = p.[Date]
                        AND p.Company =
-                          ${{cId}} AND p.EmployeeNumber = ${{uId}}) as DailyHoursNet
+                          ${cId} AND p.EmployeeNumber = ${uId}) as DailyHoursNet
                    FROM dbo.B_Calendar c
-                   WHERE c.Company = ${{cId}}
-                     AND c.[Date] >= '${{startDate}}'
-                     AND c.[Date] <= '${{endDate}}'
+                   WHERE c.Company = ${cId}
+                     AND c.[Date] >= '${startDate}'
+                     AND c.[Date] <= '${endDate}'
                    ORDER BY c.DATE DESC`;
     const result = await db.query(query);
     res.send(result);
