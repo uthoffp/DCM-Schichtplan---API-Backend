@@ -19,6 +19,7 @@ app.listen(PORT, () => console.log("Webserver started on http://localhost:" + pr
 
 //Routes
 app.get('/', (req, res) => res.send("HelloWorld"))
+app.get('/company', (req, res) => companyController.allCompanies(res));
 app.get('/company/:cId/login/:email', (req, res) => loginController.login(req, res));
 app.post('/company/:cId/block/:email, ', (req, res) => loginController.blockAccount(req, res));
 app.post('/company/:cId/user/:uId/changepw', authenticateToken, (req, res) => loginController.changePassword(req, res));

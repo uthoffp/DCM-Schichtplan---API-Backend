@@ -2,11 +2,18 @@ const db = require('../config/db');
 
 module.exports.companyData = async function (req, res) {
     const cId = req.params.cId;
-    const query = `SELECT CompanyName1, CompanyName2, Street, Postcode, City, Phone, Picture
+    const query = `SELECT Company as ID, CompanyName1, CompanyName2, Street, Postcode, City, Phone, Picture
                    FROM [B_BaseData]
                    WHERE Company = '${cId}'`;
     const cData = await db.query(query);
     res.send(cData[0]);
+}
+
+module.exports.allCompanies = async function (res) {
+    const query = `SELECT Company as ID, CompanyName1, CompanyName2, Street, Postcode, City, Phone, Picture
+                   FROM [B_BaseData]`;
+    const cData = await db.query(query);
+    res.send(cData);
 }
 
 module.exports.specialTime = async function (req, res) {
