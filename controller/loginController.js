@@ -15,9 +15,14 @@ module.exports.login = async function (req, res) {
     const user = result[0];
 
     if (user !== undefined && pw === user.Password) {
-        delete user.Password;   //remove user from password
         const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '60m'});
-        res.json({access_token: token, user});
+        res.json({
+            token: token,
+            uId: user.EmployeeNumber,
+            familyName: user.FamilyName,
+            firstName: user.FirstName,
+            company: user.Company
+        });
     } else {
         res.sendStatus(401);
     }
