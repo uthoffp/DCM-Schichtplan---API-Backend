@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 module.exports.companyData = async function (req, res) {
     const cId = req.params.cId;
-    const query = `SELECT Company as ID, CompanyName1, CompanyName2, Street, Postcode, City, Phone, Picture
+    const query = `SELECT Company as ID, CompanyName1, CompanyName2, Street, Postcode, City, Phone, cast(cast(Picture as varbinary(max)) as varchar(max)) as Picture
                    FROM [B_BaseData]
                    WHERE Company = '${cId}'`;
     const cData = await db.query(query);

@@ -31,13 +31,14 @@ module.exports.clocking = async function (req, res) {
     const date = new Date();
     const cId = req.params.cId;
     const uId = req.params.uId;
-    const tId = req.body.tId;
-    const status = req.body.status; // comes = 0, goes = 1
-    const username = req.body.username;
-    const eKey = date.toShortString() + '-' + tId;
+    const tId = req.body.nameValuePairs.tId;
+    const status = req.body.nameValuePairs.status; // comes = 1, goes = 2
+    const username = req.body.nameValuePairs.username;
+    const eKey = date.toShortString() + '-' + tId.toString();
+    const origString = `${tId} | ${date.toShortString()} | ${status.toString()}`
 
     const query = `INSERT INTO [S_ElectronicTime] (Company, E_Key, EmployeeNumber, E_Date, E_Time, E_Status, TerminalID, Processed, E_System, E_Source, OriginalString, LastChange, LastUser)
-                   VALUES (${cId}, ${eKey}, ${uId}, GETDATE(), CONVERT(TIME, GETDATE()), ${status}, 10001, 0, 98, 'DCM_APP', NULL, GETDATE(), ${username})`;
+                   VALUES (${cId}, ${eKey}, ${uId}, GETDATE(), CONVERT(TIME, GETDATE()), ${status}, 10001, 0, 98, 'DCM_APP', '${origString}', GETDATE(), '${username}')`;
     const result = await db.query(query);
     res.send(result);
 }
@@ -119,7 +120,7 @@ module.exports.timeActual = async function (req, res) {
                    WHERE c.Company = ${cId}
                      AND c.[Date] >= '${startDate}'
                      AND c.[Date] <= '${endDate}'
-                   ORDER BY c.DATE DESC`;
+                   ORDER BY c.DATE ASC`;
     const result = await db.query(query);
     res.send(result);
 }
@@ -201,7 +202,7 @@ module.exports.timePlanned = async function (req, res) {
                    WHERE c.Company = ${cId}
                      AND c.[Date] >= '${startDate}'
                      AND c.[Date] <= '${endDate}'
-                   ORDER BY c.DATE DESC`;
+                   ORDER BY c.DATE ASC`;
     const result = await db.query(query);
     res.send(result);
 }
