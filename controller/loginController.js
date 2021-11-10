@@ -7,7 +7,7 @@ module.exports.login = async function (req, res) {
     const email = req.params.email;
     const pw = crypto.encrypt(req.query.pw);
 
-    const query = `SELECT EmployeeNumber, FamilyName, FirstName, Password, Company, WebAccessBlocked
+    const query = `SELECT EmployeeNumber, FamilyName, FirstName, Password, Company, WebAccessBlocked, Department
                    FROM [B_Employees]
                    WHERE Company = ${cId}
                      AND EMail = '${email}'`;
@@ -21,7 +21,8 @@ module.exports.login = async function (req, res) {
             uId: user.EmployeeNumber,
             familyName: user.FamilyName,
             firstName: user.FirstName,
-            company: user.Company
+            company: user.Company,
+            department: user.Department
         });
     } else {
         res.sendStatus(401);

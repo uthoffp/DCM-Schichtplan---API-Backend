@@ -21,11 +21,11 @@ module.exports.plannedHolidays = async function (req, res) {
 
     const query = `SELECT sum(DaysHoliday) as DH
                    FROM DCM.dbo.S_WeekPlan
-                   WHERE Company = ${uId}
-                     AND EmployeeNumber = ${cId}
+                   WHERE Company = ${cId}
+                     AND EmployeeNumber = ${uId}
                      AND Year = ${year}`;
     const result = await db.query(query);
-    res.send(result);
+    res.send(await result[0].DH.toString());
 }
 
 module.exports.actualHolidays = async function (req, res) {
@@ -35,9 +35,23 @@ module.exports.actualHolidays = async function (req, res) {
 
     const query = `SELECT sum(DaysHoliday) as DH
                    FROM DCM.dbo.S_WeekActual
-                   WHERE Company = ${uId}
-                     AND EmployeeNumber = ${cId}
+                   WHERE Company = ${cId}
+                     AND EmployeeNumber = ${uId}
                      AND Year = ${year}`;
     const result = await db.query(query);
-    res.send(result);
+    res.send(await result[0].DH.toString());
+}
+
+module.exports.fromLastYear = async function (req, res) {
+    const cId = req.params.cId;
+    const uId = req.params.uId;
+    const year = req.params.year;
+
+    const query = `SELECT sum(DaysHoliday) as DH
+                   FROM DCM.dbo.S_WeekActual
+                   WHERE Company = ${cId}
+                     AND EmployeeNumber = ${uId}
+                     AND Year = ${year}`;
+    const result = await db.query(query);
+    res.send(await result[0].DH.toString());
 }

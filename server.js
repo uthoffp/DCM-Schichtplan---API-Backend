@@ -8,6 +8,7 @@ const loginController = require('./controller/loginController');
 const departmentController = require('./controller/departmentController');
 const timeController = require('./controller/timeController');
 const employeeController = require('./controller/employeeController');
+const abRequestController = require('./controller/absenceRequestController')
 
 
 // API Server Config
@@ -25,11 +26,12 @@ app.post('/company/:cId/block/:email, ', (req, res) => loginController.blockAcco
 app.post('/company/:cId/user/:uId/changepw', authenticateToken, (req, res) => loginController.changePassword(req, res));
 
 app.get('/company/:cId/user/:uId/holiday/days', authenticateToken, (req, res) => employeeController.userDays(req, res));
-app.get('/company/:cId/user/:uId/holiday/planned', authenticateToken, (req, res) => employeeController.plannedHolidays(req, res));
-app.get('/company/:cId/user/:uId/holiday/actual', authenticateToken, (req, res) => employeeController.actualHolidays(req, res));
+app.get('/company/:cId/user/:uId/holiday/planned/:year', authenticateToken, (req, res) => employeeController.plannedHolidays(req, res));
+app.get('/company/:cId/user/:uId/holiday/actual/:year', authenticateToken, (req, res) => employeeController.actualHolidays(req, res));
 
 app.get('/company/:cId', authenticateToken, (req, res) => companyController.companyData(req, res));
 app.get('/company/:cId/specialtime/:type', authenticateToken, (req, res) => companyController.specialTime(req, res));
+app.get('/company/:cId/specialtime/', authenticateToken, (req, res) => companyController.specialTimeAll(req, res));
 app.get('/company/:cId/specialtime/sub', authenticateToken, (req, res) => companyController.subSpecialTime(req, res));
 app.get('/company/:cId/settings', authenticateToken, (req, res) => companyController.subSpecialTime(req, res));
 
@@ -40,6 +42,8 @@ app.get('/company/:cId/user/:uId/actual/:start/:end', authenticateToken, (req, r
 app.get('/company/:cId/user/:uId/planned/:start/:end', authenticateToken, (req, res) => timeController.timePlanned(req, res));
 app.get('/company/:cId/user/:uId/actual/latest', authenticateToken, (req, res) => timeController.latestTimes(req, res));
 app.post('/company/:cId/user/:uId/clocking', authenticateToken, (req, res) => timeController.clocking(req, res));
+
+app.post('/company/:cId/user/:uId/abrequest', authenticateToken, (req, res) => abRequestController.addAbRequest(req, res));
 
 
 //Verify access-token

@@ -2,7 +2,14 @@ const db = require('../config/db');
 
 module.exports.companyData = async function (req, res) {
     const cId = req.params.cId;
-    const query = `SELECT Company as ID, CompanyName1, CompanyName2, Street, Postcode, City, Phone, cast(cast(Picture as varbinary(max)) as varchar(max)) as Picture
+    const query = `SELECT Company                                               as ID,
+                          CompanyName1,
+                          CompanyName2,
+                          Street,
+                          Postcode,
+                          City,
+                          Phone,
+                          cast(cast(Picture as varbinary(max)) as varchar(max)) as Picture
                    FROM [B_BaseData]
                    WHERE Company = '${cId}'`;
     const cData = await db.query(query);
@@ -10,7 +17,14 @@ module.exports.companyData = async function (req, res) {
 }
 
 module.exports.allCompanies = async function (res) {
-    const query = `SELECT Company as ID, CompanyName1, CompanyName2, Street, Postcode, City, Phone, Picture
+    const query = `SELECT Company as ID,
+                          CompanyName1,
+                          CompanyName2,
+                          Street,
+                          Postcode,
+                          City,
+                          Phone,
+                          Picture
                    FROM [B_BaseData]`;
     const cData = await db.query(query);
     res.send(cData);
@@ -24,6 +38,17 @@ module.exports.specialTime = async function (req, res) {
                    WHERE [Company] = ${cId}
                      AND LanguageKey = 'deu'
                      AND TypeKey = ${typeKey}`;
+    const result = await db.query(query);
+    res.send(result);
+}
+
+module.exports.specialTimeAll = async function (req, res) {
+    const cId = req.params.cId;
+    const query = `SELECT TypeKey, ShortName, Name, DaysInAdvance, Red, Green, Blue
+                   FROM [B_SpecialTime]
+                   WHERE [Company] = ${cId}
+                     AND LanguageKey = 'deu'
+                     AND UseInWeb = 1`;
     const result = await db.query(query);
     res.send(result);
 }
