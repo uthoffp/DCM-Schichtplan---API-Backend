@@ -13,10 +13,9 @@ const abRequestController = require('./controller/absenceRequestController')
 
 // API Server Config
 const app = express();
-const PORT = 8080;
+const port = process.env.APP_PORT;
 app.use(express.json())
-app.listen(PORT, () => console.log("Webserver started on http://localhost:" + process.env.APP_PORT));
-
+app.listen(port, () => console.log(`Webserver started on http://localhost:${port}`));
 
 //Routes
 app.get('/', (req, res) => res.send("HelloWorld"))

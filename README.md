@@ -1,24 +1,43 @@
-# Lumen PHP Framework
+# **DCM Schichtplan - API**
+API Interface to provide Data for mobile versions of the CiF DCM Personalmanager.
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
+## Development Setup
+### Install NodeJs
+**MacOs / Windows:**
+[Download](https://nodejs.org/en/download/ "Download")
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+**Linux:**
+```
+sudo apt install nodejs
+sudo apt install npm
+```
+### Project Setup
+#### Database
+Install MsSQL Server [here](https://www.microsoft.com/en-us/sql-server/sql-server-downloads?SilentAuth=1&wa=wsignin1.0 "here").
 
-## Official Documentation
+Import Database DDL:
+```
+sqlcmd -S SERVERNAME\INSTANCE_NAME -i ddl.sql -o C:\path\output_file.txt
+```
+If you are unable to connect to your local database follow [this](https://www.jetbrains.com/help/datagrip/db-tutorial-connecting-to-ms-sql-server.html "this") guide.
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+#### .env file
+Copy the .env.example file and rename it to .env and replace the default values for the following parameter with the correct ones for your local setup:
+- APP_PORT
+- ACCESS_TOKEN_SECRET
+- DB_HOST
+- DB_USERNAME
+- DB_PASSWORD
 
-## Contributing
+#### Node
+Install required Node packages
+```
+npm install
+```
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Run Development Server
+To start the development Server run the following command:
+```bash
+node ./server.js
+```
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
