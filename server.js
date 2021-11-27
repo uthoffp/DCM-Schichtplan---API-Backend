@@ -43,6 +43,7 @@ app.get('/company/:cId/user/:uId/actual/latest', authenticateToken, (req, res) =
 app.post('/company/:cId/user/:uId/clocking', authenticateToken, (req, res) => timeController.clocking(req, res));
 
 app.post('/company/:cId/user/:uId/abrequest', authenticateToken, (req, res) => abRequestController.addAbRequest(req, res));
+app.get('/company/:cId/user/:uId/holidays/:start/:end', authenticateToken, (req, res) => abRequestController.getHolidays(req, res));
 
 
 //Verify access-token
