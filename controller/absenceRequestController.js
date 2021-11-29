@@ -34,8 +34,8 @@ module.exports.getHolidays = async function (req, res) {
     let remaining = open + await thisRequest;
 
     res.send({
-        'prev': prevYear,
-        'this': thisYear,
+        'prevYear': prevYear,
+        'thisYear': thisYear,
         'total': total,
         'corrections': corrections,
         'taken': taken,

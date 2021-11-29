@@ -7,7 +7,6 @@ const companyController = require('./controller/companyController');
 const loginController = require('./controller/loginController');
 const departmentController = require('./controller/departmentController');
 const timeController = require('./controller/timeController');
-const employeeController = require('./controller/employeeController');
 const abRequestController = require('./controller/absenceRequestController')
 
 
@@ -23,10 +22,6 @@ app.get('/company', (req, res) => companyController.allCompanies(res));
 app.get('/company/:cId/login/:email', (req, res) => loginController.login(req, res));
 app.post('/company/:cId/block/:email, ', (req, res) => loginController.blockAccount(req, res));
 app.post('/company/:cId/user/:uId/changepw', authenticateToken, (req, res) => loginController.changePassword(req, res));
-
-app.get('/company/:cId/user/:uId/holiday/days', authenticateToken, (req, res) => employeeController.userDays(req, res));
-app.get('/company/:cId/user/:uId/holiday/planned/:year', authenticateToken, (req, res) => employeeController.plannedHolidays(req, res));
-app.get('/company/:cId/user/:uId/holiday/actual/:year', authenticateToken, (req, res) => employeeController.actualHolidays(req, res));
 
 app.get('/company/:cId', authenticateToken, (req, res) => companyController.companyData(req, res));
 app.get('/company/:cId/specialtime/:type', authenticateToken, (req, res) => companyController.specialTime(req, res));
