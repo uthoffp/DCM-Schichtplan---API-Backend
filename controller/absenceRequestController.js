@@ -12,7 +12,7 @@ module.exports.addAbRequest = async function (req, res) {
                            ${req.body.nameValuePairs.type}, 0, '${req.body.nameValuePairs.start}',
                            '${req.body.nameValuePairs.start}', ${req.body.nameValuePairs.startHalf},
                            '${req.body.nameValuePairs.stop}', ${req.body.nameValuePairs.stopHalf},
-                           '${req.body.nameValuePairs.comment}', null, null, '.jpg', ${cId})`;
+                           '${req.body.nameValuePairs.comment}', ${req.body.nameValuePairs.attachment}, null, '.jpg', ${cId})`;
     const result = await db.query(query);
     res.send(result);
 }

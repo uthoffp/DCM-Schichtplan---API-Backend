@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+
 //controller
 const companyController = require('./controller/companyController');
 const loginController = require('./controller/loginController');
@@ -13,11 +14,14 @@ const abRequestController = require('./controller/absenceRequestController')
 // API Server Config
 const app = express();
 const port = process.env.APP_PORT;
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 app.use(express.json())
 app.listen(port, () => console.log(`Webserver started on http://localhost:${port}`));
 
+
 //Routes
-app.get('/', (req, res) => res.send("HelloWorld"))
+app.get('/', (req, res) => res.send("DCM Schichtplan API"))
 app.get('/company', (req, res) => companyController.allCompanies(res));
 app.get('/company/:cId/login/:email', (req, res) => loginController.login(req, res));
 app.post('/company/:cId/block/:email, ', (req, res) => loginController.blockAccount(req, res));
